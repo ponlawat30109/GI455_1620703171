@@ -13,7 +13,7 @@ public class TextSearch : MonoBehaviour
     {
         foreach (string dataName in textData)
         {
-            print(dataName);
+            Debug.Log(dataName);
             dataText.text += dataName + "\n";
         }
     }
@@ -24,12 +24,12 @@ public class TextSearch : MonoBehaviour
 
         if (textData.Contains(name))
         {
-            print(name + " is found");
+            Debug.Log(name + " is found");
             resultText.text = "[ <color=green>" + name + "</color> ] is found.";
         }
         else
         {
-            print(name + " is not found");
+            Debug.Log(name + " is not found");
             resultText.text = "[ <color=red>" + name + "</color> ] is not found.";
         }
     }
