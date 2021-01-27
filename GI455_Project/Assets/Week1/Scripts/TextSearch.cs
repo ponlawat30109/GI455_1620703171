@@ -18,6 +18,14 @@ public class TextSearch : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            CheckName();
+        }
+    }
+
     public void CheckName()
     {
         name = InputField.GetComponent<Text>().text;
@@ -25,12 +33,12 @@ public class TextSearch : MonoBehaviour
         if (textData.Contains(name))
         {
             Debug.Log(name + " is found");
-            resultText.text = "[ <color=green>" + name + "</color> ] is found.";
+            resultText.text = $"[ <color=green>{name}</color> ] is found.";
         }
         else
         {
             Debug.Log(name + " is not found");
-            resultText.text = "[ <color=red>" + name + "</color> ] is not found.";
+            resultText.text = $"[ <color=red>{name}</color> ] is not found.";
         }
     }
 }
