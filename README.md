@@ -2,7 +2,7 @@
 
 ## Week 1
 Text finding
-- v1.0 ทดสอบอัพขึ้น git 
+- v1.0  
 - v1.1 แก้ print เป็น Debug.Log()
 - v1.2 แก้ layout canvas
 - v1.3 แก้ชื่อ commit
