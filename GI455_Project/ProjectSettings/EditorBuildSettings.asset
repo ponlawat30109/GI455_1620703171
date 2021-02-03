@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Week2_MessengerProgram/Scenes/EnterData.unity
+    guid: 044328e18c26c964bba0be1e75c12532
+  - enabled: 1
+    path: Assets/Week2_MessengerProgram/Scenes/MessengerProgram.unity
+    guid: 77e3d8ffbe6fb274c8bd4e4578b77132
   m_configObjects: {}
