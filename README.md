@@ -8,3 +8,7 @@ Text finding
 - v1.3 แก้ชื่อ commit
 - v1.4 ปรับแก้การแสดงผล output และเพิ่มให้กดปุ่ม enter แล้ว find ทำงาน
 - v1.5 เพิ่มให้กดปุ่ม keypad enter แล้ว find ทำงาน
+
+## Week 2
+Chat Program
+- v1.0 Release
