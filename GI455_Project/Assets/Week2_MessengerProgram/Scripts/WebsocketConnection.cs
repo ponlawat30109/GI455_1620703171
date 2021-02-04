@@ -82,11 +82,11 @@ namespace MessengerProgram
                 newTextbox.alignment = TextAnchor.UpperRight;
                 int usernameStrLenght = temp[0].Length;
                 //string newTemp = message[message.Count - 1].Substring(usernameStrLenght);
-                newTextbox.text += message[message.Count - 1].Substring(usernameStrLenght + 2) + "\n";
+                newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";  //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
             }
             else
             {
-                newTextbox.text += message[message.Count - 1] + "\n";
+                newTextbox.text += $"{message[message.Count - 1]}\n";
             }
 
         }
@@ -130,7 +130,6 @@ namespace MessengerProgram
         public void LeaveChat()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-
         }
     }
 }
