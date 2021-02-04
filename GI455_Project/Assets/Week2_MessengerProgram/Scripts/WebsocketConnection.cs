@@ -20,10 +20,7 @@ namespace MessengerProgram
         public Text chatText, headerText;
         public Button sendButton, leaveButton;
 
-        public Canvas chatCanvas;
-
         public Transform content;
-        public GameObject newChat;
 
         [SerializeField] List<string> message = new List<string>();
 
@@ -37,15 +34,12 @@ namespace MessengerProgram
 
             websocket.Connect();
 
-            //chatText.text = string.Empty;
             chatText.text = $"\n<b>Welcome {username} to GI455 Chat</b>\n";
             chatText.alignment = TextAnchor.UpperCenter;
 
             //Text newTextbox = Instantiate(chatText, content) as Text;
             //newTextbox.transform.SetParent(content.transform);
             //newTextbox.text = string.Empty;
-
-            //CreateNewChat();
 
             sendButton.onClick.AddListener(GetText);
             leaveButton.onClick.AddListener(LeaveChat);
@@ -82,13 +76,13 @@ namespace MessengerProgram
                 newTextbox.alignment = TextAnchor.UpperRight;
                 int usernameStrLenght = temp[0].Length;
                 //string newTemp = message[message.Count - 1].Substring(usernameStrLenght);
-                newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";  //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
+                newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";  
+                //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
             }
             else
             {
                 newTextbox.text += $"{message[message.Count - 1]}\n";
             }
-
         }
 
         private void OnDestroy()
@@ -111,9 +105,7 @@ namespace MessengerProgram
                     string currentMessage = string.Concat($"{username}: {textMessage}");
                     websocket.Send($"{currentMessage}");
                 }
-
             }
-
             //ChatUpdate();
             //CreateNewChat();
         }
