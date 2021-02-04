@@ -45,13 +45,13 @@ namespace MessengerProgram
             leaveButton.onClick.AddListener(LeaveChat);
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                GetText();
-            }
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Return))
+        //    {
+        //        GetText();
+        //    }
+        //}
 
         //public void CreateNewChat()
         //{
