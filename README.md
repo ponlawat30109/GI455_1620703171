@@ -12,3 +12,5 @@ Text finding
 ## Week 2
 Chat Program
 - v1.0 Release
+- v1.1 Remove unused asset
+- v1.2 Change build setting
