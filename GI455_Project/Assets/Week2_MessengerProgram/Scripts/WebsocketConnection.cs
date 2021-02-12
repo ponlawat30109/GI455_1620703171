@@ -16,6 +16,7 @@ namespace MessengerProgram
         {
             [SerializeField] public string userName;
             [SerializeField] public string message;
+            [SerializeField] public string color;
         }
 
         string url = EnterData.url;
@@ -62,7 +63,7 @@ namespace MessengerProgram
                     newTextbox.transform.SetParent(content.transform);
                     newTextbox.text = string.Empty;
                     newTextbox.alignment = TextAnchor.UpperRight;
-                    newTextbox.text += recieveMessageData.userName + ": " + recieveMessageData.message;
+                    newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 }
                 else
                 {
@@ -70,7 +71,7 @@ namespace MessengerProgram
                     newTextbox.transform.SetParent(content.transform);
                     newTextbox.text = string.Empty;
                     newTextbox.alignment = TextAnchor.UpperLeft;
-                    newTextbox.text += recieveMessageData.userName + ": " + recieveMessageData.message;
+                    newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 }
 
                 messageList.Add(recieveMessageData);
@@ -128,6 +129,7 @@ namespace MessengerProgram
             MessageData newMessageData = new MessageData();
             newMessageData.userName = username;
             newMessageData.message = textMessage;
+            newMessageData.color = "#FFAC13";
 
             string toJSONStr = JsonUtility.ToJson(newMessageData);
 
