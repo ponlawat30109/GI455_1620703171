@@ -11,10 +11,18 @@ namespace MessengerProgram
     {
         private WebSocket websocket;
 
+        [SerializeField]
+        public class MessageData
+        {
+            [SerializeField] public string userName;
+            [SerializeField] public string message;
+        }
+
         string url = EnterData.url;
         string port = EnterData.port;
         string username = EnterData.username;
         string textMessage = "";
+        string tempMessageString;
 
         public InputField inputField;
         public Text chatText, headerText;
@@ -22,7 +30,8 @@ namespace MessengerProgram
 
         public Transform content;
 
-        [SerializeField] List<string> message = new List<string>();
+        [SerializeField] List<MessageData> messageList = new List<MessageData>();
+        //[SerializeField] Dictionary<string, string> message = new Dictionary<string, string>();
 
         void Start()
         {
@@ -37,21 +46,39 @@ namespace MessengerProgram
             chatText.text = $"\n<b>Welcome {username} to GI455 Chat</b>\n";
             chatText.alignment = TextAnchor.UpperCenter;
 
-            //Text newTextbox = Instantiate(chatText, content) as Text;
-            //newTextbox.transform.SetParent(content.transform);
-            //newTextbox.text = string.Empty;
-
             sendButton.onClick.AddListener(GetText);
             leaveButton.onClick.AddListener(LeaveChat);
         }
 
-        //private void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Return))
-        //    {
-        //        GetText();
-        //    }
-        //}
+        private void Update()
+        {
+            if (string.IsNullOrEmpty(tempMessageString) == false)
+            {
+                MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(tempMessageString);
+
+                if (recieveMessageData.userName == username)
+                {
+                    Text newTextbox = Instantiate(chatText, content) as Text;
+                    newTextbox.transform.SetParent(content.transform);
+                    newTextbox.text = string.Empty;
+                    newTextbox.alignment = TextAnchor.UpperRight;
+                    newTextbox.text += recieveMessageData.userName + ": " + recieveMessageData.message;
+                }
+                else
+                {
+                    Text newTextbox = Instantiate(chatText, content) as Text;
+                    newTextbox.transform.SetParent(content.transform);
+                    newTextbox.text = string.Empty;
+                    newTextbox.alignment = TextAnchor.UpperLeft;
+                    newTextbox.text += recieveMessageData.userName + ": " + recieveMessageData.message;
+                }
+
+                messageList.Add(recieveMessageData);
+                //Debug.Log($"{messageList[messageList.Count -1].userName}: {messageList[messageList.Count - 1].message}");
+
+                tempMessageString = string.Empty;
+            }
+        }
 
         //public void CreateNewChat()
         //{
@@ -60,30 +87,30 @@ namespace MessengerProgram
         //    newTextbox.text += message[message.Count - 1];
         //}
 
-        public void ChatUpdate()
-        {
-            //chatText.text += message[message.Count - 1] + "\n";
+        //public void ChatUpdate()
+        //{
+        //chatText.text += message[message.Count - 1] + "\n";
 
-            Text newTextbox = Instantiate(chatText, content) as Text;
-            newTextbox.transform.SetParent(content.transform);
-            newTextbox.text = string.Empty;
+        //Text newTextbox = Instantiate(chatText, content) as Text;
+        //newTextbox.transform.SetParent(content.transform);
+        //newTextbox.text = string.Empty;
 
-            string[] temp = message[message.Count - 1].Split(':');
+        //string[] temp = message[message.Count - 1].Split(':');
 
-            newTextbox.alignment = TextAnchor.UpperLeft;
-            if (temp[0] == username)
-            {
-                newTextbox.alignment = TextAnchor.UpperRight;
-                int usernameStrLenght = temp[0].Length;
-                //string newTemp = message[message.Count - 1].Substring(usernameStrLenght);
-                newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";  
-                //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
-            }
-            else
-            {
-                newTextbox.text += $"{message[message.Count - 1]}\n";
-            }
-        }
+        //newTextbox.alignment = TextAnchor.UpperLeft;
+        //if (temp[0] == username)
+        //{
+        //    newTextbox.alignment = TextAnchor.UpperRight;
+        //    int usernameStrLenght = temp[0].Length;
+        //    //string newTemp = message[message.Count - 1].Substring(usernameStrLenght);
+        //    newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";
+        //    //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
+        //}
+        //else
+        //{
+        //    newTextbox.text += $"{message[message.Count - 1]}\n";
+        //}
+        //}
 
         private void OnDestroy()
         {
@@ -98,25 +125,27 @@ namespace MessengerProgram
             textMessage = inputField.text;
             inputField.text = string.Empty;
 
-            if (textMessage != "")
+            MessageData newMessageData = new MessageData();
+            newMessageData.userName = username;
+            newMessageData.message = textMessage;
+
+            string toJSONStr = JsonUtility.ToJson(newMessageData);
+
+            if (string.IsNullOrEmpty(textMessage) == false)
             {
                 if (websocket.ReadyState == WebSocketState.Open)
                 {
-                    string currentMessage = string.Concat($"{username}: {textMessage}");
-                    websocket.Send($"{currentMessage}");
+                    //string currentMessage = string.Concat($"{username}: {textMessage}");
+                    websocket.Send(toJSONStr);
                 }
             }
-            //ChatUpdate();
-            //CreateNewChat();
         }
 
         public void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
-            Debug.Log("Recieve msg from " + messageEventArgs.Data);
+            //Debug.Log("Recieve msg from " + messageEventArgs.Data);
 
-            message.Add(messageEventArgs.Data);
-
-            ChatUpdate();
+            tempMessageString = messageEventArgs.Data;
         }
 
         public void LeaveChat()
