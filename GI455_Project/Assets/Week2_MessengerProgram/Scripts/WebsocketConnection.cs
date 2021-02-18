@@ -11,12 +11,31 @@ namespace MessengerProgram
     {
         private WebSocket websocket;
 
-        [SerializeField]
-        public class MessageData
+        struct MessageData
         {
-            [SerializeField] public string userName;
-            [SerializeField] public string message;
-            [SerializeField] public string color;
+            public string userName;
+            public string message;
+            public string color;
+            public MessageData(string username, string message, string color)
+            {
+                this.userName = username;
+                this.message = message;
+                this.color = color;
+            }
+        }
+
+        struct SocketEvent
+        {
+            public string eventName;
+            public string roomName;
+            public string status;
+
+            public SocketEvent(string eventName, string roomName, string status)
+            {
+                this.eventName = eventName;
+                this.roomName = roomName;
+                this.status = status;
+            }
         }
 
         string url = EnterData.url;
@@ -25,18 +44,25 @@ namespace MessengerProgram
         string textMessage = "";
         string tempMessageString;
 
+        string roomname = "";
+
         public InputField inputField;
+        public InputField roomnameInputField;
+
         public Text chatText, headerText;
+        public Text errorText;
+
         public Button sendButton, leaveButton;
 
         public Transform content;
 
+        public GameObject chatBoard, roomlistBoard, failedPanel;
+
         [SerializeField] List<MessageData> messageList = new List<MessageData>();
-        //[SerializeField] Dictionary<string, string> message = new Dictionary<string, string>();
 
         void Start()
         {
-            headerText.text = $"Room ws://{url}:{port}/";
+            Debug.Log("Connected");
 
             websocket = new WebSocket($"ws://{url}:{port}/");
 
@@ -44,14 +70,54 @@ namespace MessengerProgram
 
             websocket.Connect();
 
-            chatText.text = $"\n<b>Welcome {username} to GI455 Chat</b>\n";
-            chatText.alignment = TextAnchor.UpperCenter;
-
             sendButton.onClick.AddListener(GetText);
-            leaveButton.onClick.AddListener(LeaveChat);
+            //leaveButton.onClick.AddListener(LeaveChat);
         }
 
         private void Update()
+        {
+            IsJoinRoom();
+            ChatUpdate();
+        }
+
+        void IsJoinRoom()
+        {
+            if (string.IsNullOrEmpty(tempMessageString) == false)
+            {
+                SocketEvent eventCheck = JsonUtility.FromJson<SocketEvent>(tempMessageString);
+                if (eventCheck.status == "success")
+                {
+                    roomlistBoard.SetActive(false);
+                    chatBoard.SetActive(true);
+
+                    headerText.text = $"{roomname}";
+                    chatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
+                    chatText.alignment = TextAnchor.UpperCenter;
+                }
+                else
+                {
+                    failedPanel.SetActive(true);
+                    if (eventCheck.eventName == "CreateRoom")
+                    {
+                        errorText.text = "Failed to create room.\nRoom already exist";
+                    }
+                    else if (eventCheck.eventName == "JoinRoom")
+                    {
+                        errorText.text = "Failed to join room.\nRoom is not exist";
+                    }
+                }
+
+                if (eventCheck.eventName == "LeaveRoom")
+                {
+                    roomlistBoard.SetActive(true);
+                    chatBoard.SetActive(false);
+                }
+
+                tempMessageString = string.Empty;
+            }
+        }
+
+        public void ChatUpdate()
         {
             if (string.IsNullOrEmpty(tempMessageString) == false)
             {
@@ -81,43 +147,57 @@ namespace MessengerProgram
             }
         }
 
-        //public void CreateNewChat()
-        //{
-        //    Text newTextbox = Instantiate(chatText, content) as Text;
-        //    newTextbox.transform.SetParent(content.transform);
-        //    newTextbox.text += message[message.Count - 1];
-        //}
-
-        //public void ChatUpdate()
-        //{
-        //chatText.text += message[message.Count - 1] + "\n";
-
-        //Text newTextbox = Instantiate(chatText, content) as Text;
-        //newTextbox.transform.SetParent(content.transform);
-        //newTextbox.text = string.Empty;
-
-        //string[] temp = message[message.Count - 1].Split(':');
-
-        //newTextbox.alignment = TextAnchor.UpperLeft;
-        //if (temp[0] == username)
-        //{
-        //    newTextbox.alignment = TextAnchor.UpperRight;
-        //    int usernameStrLenght = temp[0].Length;
-        //    //string newTemp = message[message.Count - 1].Substring(usernameStrLenght);
-        //    newTextbox.text += $"{message[message.Count - 1].Substring(usernameStrLenght + 2)}\n";
-        //    //$"{message[message.Count - 1].Substring(usernameStrLenght + 2)} <size=24>({System.DateTime.Now.ToString("hh:mm")})</size>\n";
-        //}
-        //else
-        //{
-        //    newTextbox.text += $"{message[message.Count - 1]}\n";
-        //}
-        //}
-
         private void OnDestroy()
         {
             if (websocket != null)
             {
                 websocket.Close();
+            }
+        }
+
+        public void CreateRoom(string roomName)
+        {
+            roomname = roomnameInputField.text;
+            roomnameInputField.text = string.Empty;
+            roomName = roomname;
+
+            if (string.IsNullOrEmpty(roomname) == false)
+            {
+                if (websocket.ReadyState == WebSocketState.Open)
+                {
+                    SocketEvent newSocketEvent = new SocketEvent("CreateRoom", roomName, "");
+                    string jsonStr = JsonUtility.ToJson(newSocketEvent);
+                    websocket.Send(jsonStr);
+                }
+            }
+        }
+
+        public void JoinRoom(string roomName)
+        {
+            roomname = roomnameInputField.text;
+            roomnameInputField.text = string.Empty;
+            roomName = roomname;
+
+            if (string.IsNullOrEmpty(roomname) == false)
+            {
+                if (websocket.ReadyState == WebSocketState.Open)
+                {
+                    SocketEvent newSocketEvent = new SocketEvent("JoinRoom", roomName, "");
+                    string jsonStr = JsonUtility.ToJson(newSocketEvent);
+                    websocket.Send(jsonStr);
+                }
+            }
+        }
+
+        public void LeaveRoom(string roomName)
+        {
+            roomName = roomname;
+
+            if (websocket.ReadyState == WebSocketState.Open)
+            {
+                SocketEvent newSocketEvent = new SocketEvent("LeaveRoom", roomName, "");
+                string jsonStr = JsonUtility.ToJson(newSocketEvent);
+                websocket.Send(jsonStr);
             }
         }
 
@@ -145,14 +225,14 @@ namespace MessengerProgram
 
         public void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
-            //Debug.Log("Recieve msg from " + messageEventArgs.Data);
-
             tempMessageString = messageEventArgs.Data;
+            Debug.Log(tempMessageString);
         }
 
-        public void LeaveChat()
+        public void Disconnected()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            Debug.Log("Disconnected");
         }
     }
 }

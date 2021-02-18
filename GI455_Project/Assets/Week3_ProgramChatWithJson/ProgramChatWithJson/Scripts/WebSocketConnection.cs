@@ -9,10 +9,27 @@ namespace ChatWebSocketWithJson
 {
     public class WebSocketConnection : MonoBehaviour
     {
-        public class MessageData
+        struct MessageData
         {
             public string username;
             public string message;
+            public MessageData(string username, string message)
+            {
+                this.username = username;
+                this.message = message;
+            }
+        }
+
+        struct SocketEvent
+        {
+            public string eventName;
+            public string roomName;
+
+            public SocketEvent(string eventName, string roomName)
+            {
+                this.eventName = eventName;
+                this.roomName = roomName;
+            }
         }
 
         public GameObject rootConnection;
@@ -45,6 +62,18 @@ namespace ChatWebSocketWithJson
 
             rootConnection.SetActive(false);
             rootMessenger.SetActive(true);
+
+            CreateRoom("TestRoom01");
+        }
+
+        public void CreateRoom(string roomName)
+        {
+            if (ws.ReadyState == WebSocketState.Open)
+            {
+                SocketEvent newSocketEvent = new SocketEvent("CreateRoom",roomName);
+                string jsonStr = JsonUtility.ToJson(newSocketEvent);
+                ws.Send(jsonStr);
+            }
         }
 
         public void Disconnect()
@@ -95,6 +124,7 @@ namespace ChatWebSocketWithJson
         private void OnMessage(object sender, MessageEventArgs messageEventArgs)
         {
             tempMessageString = messageEventArgs.Data;
+            Debug.Log(tempMessageString);
         }
     }
 }
