@@ -15,3 +15,10 @@ Chat Program
 - v1.1 Remove unused asset
 - v1.2 Change build setting
 - v1.3 Change data to json format
+
+## Week 3
+- JSON format
+
+## Week 4
+Chat Program
+- v1.4 Add Lobby
