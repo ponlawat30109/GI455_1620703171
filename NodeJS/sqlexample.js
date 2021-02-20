@@ -15,12 +15,14 @@ let db = new sqlite.Database(
     var password = "123456";
     var name = "test7";
 
-    var sqlSelect = "SELECT * FROM UserData WHERE UserID = '" + id + "' AND Password = '" + password + "' ";
-    var sqlInsert = "INSERT INTO UserData (UserID, Password, Name, Money) VALUES ('" + id + "', '" + password + "', '" + name + "', '100')";
-    var sqlUpdate = "UPDATE UserData SET Money = '500' WHERE UserID = '" + id + "'";
+    var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${id}' AND Password = '${password}' `;
+    var sqlInsert = `INSERT INTO UserData (UserID, Password, Name, Money) VALUES ('${id}', '${password}', '${name}', '100')`;
+    var sqlUpdate = `UPDATE UserData SET Money = '500' WHERE UserID = '${id}'`;
 
     db.all(
-      "SELECT Money FROM UserData WHERE UserID = '" + id +"'",
+      // `SELECT Money FROM UserData WHERE UserID = '${id}'`,
+      "SELECT * FROM UserData WHERE Money != 0",
+      // sqlSelect,
       (err, rows) => {
         if (err) {
           console.log(err);
@@ -52,7 +54,9 @@ let db = new sqlite.Database(
           }
         }
         
-        console.log(rows);
+        // console.log(rows);
+        console.table(rows);
+        console.log(`${id} ${password}`);
       }
     );
   }
