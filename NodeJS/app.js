@@ -66,7 +66,9 @@ wss.on("connection", (ws) => {
           ws.send(jsonToStr);
 
           for (var i = 0; i < roomList.length; i++) {
-            console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
+            console.log(
+              `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
+            );
           }
         }
       } else if (toJSON.eventName == "JoinRoom") {
@@ -105,7 +107,9 @@ wss.on("connection", (ws) => {
           ws.send(jsonToStr);
         }
         for (var i = 0; i < roomList.length; i++) {
-          console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
+          console.log(
+            `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
+          );
         }
       } else if (toJSON.eventName == "LeaveRoom") {
         console.log("Client request to Leave Room [" + toJSON.data + "]");
@@ -135,10 +139,11 @@ wss.on("connection", (ws) => {
           console.log("Leave room [ failed ]");
         }
         for (var i = 0; i < roomList.length; i++) {
-          console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
+          console.log(
+            `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
+          );
         }
-      }
-      else if (toJSON.eventName == "SendMessage"){
+      } else if (toJSON.eventName == "SendMessage") {
         console.log(toJSON.data);
         var resultData = {
           eventName: toJSON.eventName,
@@ -171,7 +176,7 @@ wss.on("connection", (ws) => {
 
     for (var i = 0; i < roomList.length; i++) {
       console.log(
-        "ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length
+        `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
       );
     }
   });
@@ -186,22 +191,20 @@ function ArrayRemove(arr, value) {
 function Broadcast(ws, message) {
   var selecttRoomIndex = -1;
   for (var i = 0; i < roomList.length; i++) {
-    for(var j = 0; j < roomList[i].wsList.length; j++){
-      if(ws == roomList[i].wsList[j]){
+    for (var j = 0; j < roomList[i].wsList.length; j++) {
+      if (ws == roomList[i].wsList[j]) {
         selecttRoomIndex = i;
         break;
       }
     }
   }
 
-  for(var i = 0; i < roomList[selecttRoomIndex].wsList.length; i++){
+  for (var i = 0; i < roomList[selecttRoomIndex].wsList.length; i++) {
     var callbackMsg = {
-      eventName:"SendMessage",
-      data:message,
-      status: "success"
-    }
+      eventName: "SendMessage",
+      data: message,
+      status: "success",
+    };
     roomList[selecttRoomIndex].wsList[i].send(message);
   }
-
-  
 }

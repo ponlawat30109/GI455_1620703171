@@ -35,7 +35,7 @@ let db = new sqlite.Database(
             currentMoney += 100;
 
             db.all(
-              `UPDATE UserData SET Money = '${currentMoney}"' WHERE UserID = '${id}'`,
+              `UPDATE UserData SET Money = '${currentMoney}' WHERE UserID = '${id}'`,
               (err, rows) => {
                 if (err) {
                   console.log(err);
