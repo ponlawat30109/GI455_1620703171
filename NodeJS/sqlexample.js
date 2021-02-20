@@ -15,6 +15,9 @@ let db = new sqlite.Database(
     var password = "123456";
     var name = "test7";
 
+    // var sqlSelect = "SELECT * FROM UserData WHERE UserID = '" + id + "' AND Password = '" + password + "' ";
+    // var sqlInsert = "INSERT INTO UserData (UserID, Password, Name, Money) VALUES ('" + id + "', '" + password + "', '" + name + "', '100')";
+    // var sqlUpdate = "UPDATE UserData SET Money = '500' WHERE UserID = '" + id + "'";
     var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${id}' AND Password = '${password}' `;
     var sqlInsert = `INSERT INTO UserData (UserID, Password, Name, Money) VALUES ('${id}', '${password}', '${name}', '100')`;
     var sqlUpdate = `UPDATE UserData SET Money = '500' WHERE UserID = '${id}'`;
@@ -26,37 +29,34 @@ let db = new sqlite.Database(
       (err, rows) => {
         if (err) {
           console.log(err);
-        }
-        else
-        {
-          if(rows.length > 0)
-          {
+        } else {
+          if (rows.length > 0) {
             var currentMoney = rows[0].Money;
             currentMoney += 100;
 
-            db.all("UPDATE UserData SET Money = '" + currentMoney + "' WHERE UserID = '" + id + "'", (err,rows)=>{
-              if (err) {
-                console.log(err);
-              }
-              else
-              {
-                var result = {
-                  status: true,
-                  money: currentMoney
-                }
+            db.all(
+              `UPDATE UserData SET Money = '${currentMoney}"' WHERE UserID = '${id}'`,
+              (err, rows) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  var result = {
+                    status: true,
+                    money: currentMoney,
+                  };
 
-                console.log(JSON.stringify(result));
+                  // console.log(JSON.stringify(result));
+                }
               }
-            })
-          }else
-          {
+            );
+          } else {
             console.log("UserID not found");
           }
         }
-        
+
         // console.log(rows);
         console.table(rows);
-        console.log(`${id} ${password}`);
+        // console.log(`${id} ${password}`);
       }
     );
   }
