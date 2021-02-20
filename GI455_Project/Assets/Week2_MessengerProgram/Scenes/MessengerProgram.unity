@@ -2037,7 +2037,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1380925339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1218471742}
+        m_MethodName: GetText
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1380925339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3620,7 +3631,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 691.1018, y: 32.142857}
+  m_SizeDelta: {x: 691.1018, y: 32.786884}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2125665212
 MonoBehaviour:
@@ -3716,7 +3727,7 @@ PrefabInstance:
     - target: {fileID: 7924648947207979071, guid: 377636161e0035f4db4b6d2258f539df,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 32.142857
+      value: 32.786884
       objectReference: {fileID: 0}
     - target: {fileID: 7924648947207979071, guid: 377636161e0035f4db4b6d2258f539df,
         type: 3}
@@ -3761,7 +3772,7 @@ PrefabInstance:
     - target: {fileID: 7924648947207979071, guid: 377636161e0035f4db4b6d2258f539df,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -16.071428
+      value: -16.393442
       objectReference: {fileID: 0}
     - target: {fileID: 7924648947207979071, guid: 377636161e0035f4db4b6d2258f539df,
         type: 3}

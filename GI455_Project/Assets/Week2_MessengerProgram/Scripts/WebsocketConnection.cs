@@ -27,13 +27,13 @@ namespace MessengerProgram
         struct SocketEvent
         {
             public string eventName;
-            public string roomName;
+            public string data;
             public string status;
 
-            public SocketEvent(string eventName, string roomName, string status)
+            public SocketEvent(string eventName, string data, string status)
             {
                 this.eventName = eventName;
-                this.roomName = roomName;
+                this.data = data;
                 this.status = status;
             }
         }
@@ -70,47 +70,63 @@ namespace MessengerProgram
 
             websocket.Connect();
 
-            sendButton.onClick.AddListener(GetText);
+            //sendButton.onClick.AddListener(GetText);
             //leaveButton.onClick.AddListener(LeaveChat);
         }
 
         private void Update()
         {
-            IsJoinRoom();
+            EventCheck();
             ChatUpdate();
         }
 
-        void IsJoinRoom()
+        void EventCheck()
         {
             if (string.IsNullOrEmpty(tempMessageString) == false)
             {
                 SocketEvent eventCheck = JsonUtility.FromJson<SocketEvent>(tempMessageString);
-                if (eventCheck.status == "success")
-                {
-                    roomlistBoard.SetActive(false);
-                    chatBoard.SetActive(true);
 
-                    headerText.text = $"{roomname}";
-                    chatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
-                    chatText.alignment = TextAnchor.UpperCenter;
-                }
-                else
+                switch (eventCheck.eventName)
                 {
-                    failedPanel.SetActive(true);
-                    if (eventCheck.eventName == "CreateRoom")
-                    {
-                        errorText.text = "Failed to create room.\nRoom already exist";
-                    }
-                    else if (eventCheck.eventName == "JoinRoom")
-                    {
-                        errorText.text = "Failed to join room.\nRoom is not exist";
-                    }
-                }
+                    case "CreateRoom":
+                        if (eventCheck.status == "success")
+                        {
+                            roomlistBoard.SetActive(false);
+                            chatBoard.SetActive(true);
 
-                if (eventCheck.eventName == "LeaveRoom")
-                {
-                    roomlistBoard.SetActive(true);
-                    chatBoard.SetActive(false);
+                            headerText.text = $"{roomname}";
+                            chatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
+                            chatText.alignment = TextAnchor.UpperCenter;
+                        }
+                        else
+                        {
+                            failedPanel.SetActive(true);
+                            errorText.text = "Failed to create room.\nRoom already exist";
+                        }
+                        break;
+                    case "JoinRoom":
+                        if (eventCheck.status == "success")
+                        {
+                            roomlistBoard.SetActive(false);
+                            chatBoard.SetActive(true);
+
+                            headerText.text = $"{roomname}";
+                            chatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
+                            chatText.alignment = TextAnchor.UpperCenter;
+                        }
+                        else
+                        {
+                            failedPanel.SetActive(true);
+                            errorText.text = "Failed to join room.\nRoom is not exist";
+                        }
+                        break;
+                    case "LeaveRoom":
+                        roomlistBoard.SetActive(true);
+                        chatBoard.SetActive(false);
+                        break;
+                    case "SendMessage":
+                        ChatUpdate();
+                        break;
                 }
 
                 tempMessageString = string.Empty;
@@ -119,9 +135,11 @@ namespace MessengerProgram
 
         public void ChatUpdate()
         {
+
             if (string.IsNullOrEmpty(tempMessageString) == false)
             {
-                MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(tempMessageString);
+                SocketEvent recieveMsgEvent = JsonUtility.FromJson<SocketEvent>(tempMessageString);
+                MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(recieveMsgEvent.data);
 
                 if (recieveMessageData.userName == username)
                 {
@@ -141,7 +159,6 @@ namespace MessengerProgram
                 }
 
                 messageList.Add(recieveMessageData);
-                //Debug.Log($"{messageList[messageList.Count -1].userName}: {messageList[messageList.Count - 1].message}");
 
                 tempMessageString = string.Empty;
             }
@@ -217,8 +234,9 @@ namespace MessengerProgram
             {
                 if (websocket.ReadyState == WebSocketState.Open)
                 {
-                    //string currentMessage = string.Concat($"{username}: {textMessage}");
-                    websocket.Send(toJSONStr);
+                    SocketEvent newSocketEvent = new SocketEvent("SendMessage", toJSONStr, "");
+                    string jsonStr = JsonUtility.ToJson(newSocketEvent);
+                    websocket.Send(jsonStr);
                 }
             }
         }

@@ -20,10 +20,10 @@ wss.on("connection", (ws) => {
       // console.log(toJSON.eventName);
 
       if (toJSON.eventName == "CreateRoom") {
-        console.log("Client request CreateRoom [" + toJSON.roomName + "]");
+        console.log("Client request CreateRoom [" + toJSON.data + "]");
         var isFoundRoom = false;
         for (var i = 0; i < roomList.length; i++) {
-          if (roomList[i].roomName == toJSON.roomName) {
+          if (roomList[i].roomName == toJSON.data) {
             isFoundRoom = true;
             break;
           }
@@ -35,7 +35,7 @@ wss.on("connection", (ws) => {
           console.log("Create Room failed");
           var resultData = {
             eventName: toJSON.eventName,
-            roomName: toJSON.roomName,
+            data: toJSON.data,
             status: "fail",
           };
 
@@ -44,7 +44,7 @@ wss.on("connection", (ws) => {
         } else {
           //create room
           var newRoom = {
-            roomName: toJSON.roomName,
+            roomName: toJSON.data,
             wsList: [],
           };
 
@@ -54,7 +54,7 @@ wss.on("connection", (ws) => {
 
           var resultData = {
             eventName: toJSON.eventName,
-            roomName: toJSON.roomName,
+            data: toJSON.data,
             status: "success",
           };
 
@@ -66,12 +66,7 @@ wss.on("connection", (ws) => {
           ws.send(jsonToStr);
 
           for (var i = 0; i < roomList.length; i++) {
-            console.log(
-              "ws in " +
-                roomList[i].roomName +
-                " is " +
-                roomList[i].wsList.length
-            );
+            console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
           }
         }
       } else if (toJSON.eventName == "JoinRoom") {
@@ -79,7 +74,7 @@ wss.on("connection", (ws) => {
         var isRoomExist = false;
         var roomindex;
         for (var i = 0; i < roomList.length; i++) {
-          if (roomList[i].roomName == toJSON.roomName) {
+          if (roomList[i].roomName == toJSON.data) {
             isRoomExist = true;
             roomindex = i;
             break;
@@ -92,7 +87,7 @@ wss.on("connection", (ws) => {
 
           var resultData = {
             eventName: toJSON.eventName,
-            roomName: toJSON.roomName,
+            data: toJSON.data,
             status: "success",
           };
 
@@ -102,7 +97,7 @@ wss.on("connection", (ws) => {
           console.log("Join Room [" + toJSON.roomName + "] failed");
           var resultData = {
             eventName: toJSON.eventName,
-            roomName: toJSON.roomName,
+            data: toJSON.data,
             status: "fail",
           };
 
@@ -110,12 +105,10 @@ wss.on("connection", (ws) => {
           ws.send(jsonToStr);
         }
         for (var i = 0; i < roomList.length; i++) {
-          console.log(
-            "ws in " + roomList[i].roomName + " is " + roomList[i].wsList.length
-          );
+          console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
         }
       } else if (toJSON.eventName == "LeaveRoom") {
-        console.log("Client request to Leave Room [" + toJSON.roomName + "]");
+        console.log("Client request to Leave Room [" + toJSON.data + "]");
         var isLeave = false;
         for (var i = 0; i < roomList.length; i++) {
           for (var j = 0; j < roomList[i].wsList.length; j++) {
@@ -131,7 +124,7 @@ wss.on("connection", (ws) => {
         }
         var resultData = {
           eventName: toJSON.eventName,
-          roomName: toJSON.roomName,
+          data: toJSON.data,
           status: "success",
         };
         var jsonToStr = JSON.stringify(resultData);
@@ -142,10 +135,18 @@ wss.on("connection", (ws) => {
           console.log("Leave room [ failed ]");
         }
         for (var i = 0; i < roomList.length; i++) {
-          console.log(
-            "ws in " + roomList[i].roomName + " is " + roomList[i].wsList.length
-          );
+          console.log("ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length);
         }
+      }
+      else if (toJSON.eventName == "SendMessage"){
+        console.log(toJSON.data);
+        var resultData = {
+          eventName: toJSON.eventName,
+          data: toJSON.data,
+          status: "success",
+        };
+        var jsonToStr = JSON.stringify(resultData);
+        Broadcast(ws, jsonToStr);
       }
     });
   }
@@ -170,7 +171,7 @@ wss.on("connection", (ws) => {
 
     for (var i = 0; i < roomList.length; i++) {
       console.log(
-        "ws in " + roomList[i].roomName + " is " + roomList[i].wsList.length
+        "ws in [" + roomList[i].roomName + "] is " + roomList[i].wsList.length
       );
     }
   });
@@ -182,8 +183,25 @@ function ArrayRemove(arr, value) {
   });
 }
 
-function Broadcast(data) {
-  for (var i = 0; i < wsList.length; i++) {
-    wsList[i].send(data);
+function Broadcast(ws, message) {
+  var selecttRoomIndex = -1;
+  for (var i = 0; i < roomList.length; i++) {
+    for(var j = 0; j < roomList[i].wsList.length; j++){
+      if(ws == roomList[i].wsList[j]){
+        selecttRoomIndex = i;
+        break;
+      }
+    }
   }
+
+  for(var i = 0; i < roomList[selecttRoomIndex].wsList.length; i++){
+    var callbackMsg = {
+      eventName:"SendMessage",
+      data:message,
+      status: "success"
+    }
+    roomList[selecttRoomIndex].wsList[i].send(message);
+  }
+
+  
 }
