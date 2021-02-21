@@ -15,26 +15,6 @@ namespace MessengerProgram
         private void Start()
         {
             connectButton.onClick.AddListener(Connect);
-
-            //string url = urlInput.GetComponent<Text>().text;
-            //string port = portInput.GetComponent<Text>().text;
-            //string name = nameInput.GetComponent<Text>().text;
-            //if (url == "")
-            //{
-            //    url = "127.0.0.1";
-            //}
-
-            //if (port == "")
-            //{
-            //    port = "5500";
-            //}
-
-            //if (name == "")
-            //{
-            //    name = "Anonymous";
-            //}
-
-            //print($"{url}:{port}");
         }
 
         public void Connect()
@@ -52,11 +32,12 @@ namespace MessengerProgram
                 port = "5500";
             }
 
-            if (username != "")
-            {
-                print($"{username} : {url}:{port}");
-                SceneManager.LoadScene("MessengerProgram");
-            }
+            //if (username != "")
+            //{
+            //    print($"{username} : {url}:{port}");
+            //    SceneManager.LoadScene("MessengerProgram");
+            //}
+            SceneManager.LoadScene("MessengerProgram");
         }
     }
 }
