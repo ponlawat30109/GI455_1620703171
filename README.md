@@ -14,10 +14,10 @@ Chat Program
 - v1.0 Release
 - v1.1 Remove unused asset
 - v1.2 Change build setting
-- v1.3 Change data to json format
 
 ## Week 3
 - JSON format
+- v1.3 Change data to json format
 
 ## Week 4
 Chat Program
