@@ -10,6 +10,19 @@ var wss = new websocket.Server({ port: 5500 }, callbackInitServer);
 var wsList = [];
 var roomList = [];
 
+let db = new sqlite.Database(
+  "./DB/chatDB.db",
+  sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE,
+  (err) => {
+    if (err) throw err;
+
+    console.log("Connected to database");
+  }
+);
+
+// var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
+// var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
+
 wss.on("connection", (ws) => {
   {
     ws.on("message", (data) => {
@@ -494,95 +507,75 @@ function SendMessage(ws, eventName, message) {
 function Login(ws, eventName, data) {
   var userCheck = JSON.parse(data);
   console.log(userCheck);
-  let db = new sqlite.Database(
-    "./DB/chatDB.db",
-    sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE,
-    (err) => {
-      if (err) throw err;
 
-      console.log("Connected to database");
+  var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
 
-      var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
-      var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
-
-      db.all(sqlSelect, (err, rows) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log(rows);
-          if (!rows.length) {
-            var resultData = {
-              eventName: eventName,
-              data: rows,
-              status: "fail",
-            };
-            var jsonToStr = JSON.stringify(resultData);
-            ws.send(jsonToStr);
-            // console.log(resultData);
-          } else {
-            // var displayName = rows[0].Name;
-            // console.log(displayName);
-            var resultData = {
-              eventName: eventName,
-              data: rows[0].Name,
-              status: "success",
-            };
-            var jsonToStr = JSON.stringify(resultData);
-            ws.send(jsonToStr);
-            // console.log(resultData);
-          }
-          // console.table(rows);
-          // console.log(`${id} ${password}`);
-        }
-      });
+  db.all(sqlSelect, (err, rows) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(rows);
+      if (!rows.length) {
+        var resultData = {
+          eventName: eventName,
+          data: rows,
+          status: "fail",
+        };
+        var jsonToStr = JSON.stringify(resultData);
+        ws.send(jsonToStr);
+        // console.log(resultData);
+      } else {
+        // var displayName = rows[0].Name;
+        // console.log(displayName);
+        var resultData = {
+          eventName: eventName,
+          data: rows[0].Name,
+          status: "success",
+        };
+        var jsonToStr = JSON.stringify(resultData);
+        ws.send(jsonToStr);
+        // console.log(resultData);
+      }
+      // console.table(rows);
+      // console.log(`${id} ${password}`);
     }
-  );
+  });
 }
 
 function Register(ws, eventName, data) {
   var userCheck = JSON.parse(data);
   console.log(userCheck);
-  let db = new sqlite.Database(
-    "./DB/chatDB.db",
-    sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE,
-    (err) => {
-      if (err) throw err;
+  
+  var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
 
-      console.log("Connected to database");
-
-      // var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
-      var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.displayname}')`;
-
-      db.all(sqlInsert, (err, rows) => {
-        if (err) {
-          console.log(err);
-        } else {
-          // console.log(rows);
-          if (!rows.length) {
-            var resultData = {
-              eventName: eventName,
-              data: rows,
-              status: "success",
-            };
-            var jsonToStr = JSON.stringify(resultData);
-            ws.send(jsonToStr);
-            // console.log(resultData);
-          } else {
-            // var displayName = rows[0].Name;
-            // console.log(displayName);
-            var resultData = {
-              eventName: eventName,
-              data: rows,
-              status: "fail",
-            };
-            var jsonToStr = JSON.stringify(resultData);
-            ws.send(jsonToStr);
-            // console.log(resultData);
-          }
-          // console.table(rows);
-          // console.log(`${id} ${password}`);
-        }
-      });
+  db.all(sqlInsert, (err, rows) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(rows);
+      if (!rows.length) {
+        var resultData = {
+          eventName: eventName,
+          data: rows,
+          status: "success",
+        };
+        var jsonToStr = JSON.stringify(resultData);
+        ws.send(jsonToStr);
+        // console.log(resultData);
+      } else {
+        // var displayName = rows[0].Name;
+        // console.log(displayName);
+        var resultData = {
+          eventName: eventName,
+          data: rows,
+          status: "fail",
+        };
+        var jsonToStr = JSON.stringify(resultData);
+        ws.send(jsonToStr);
+        // console.log(resultData);
+      }
+      // console.table(rows);
+      // console.log(`${id} ${password}`);
     }
-  );
+  });
 }
