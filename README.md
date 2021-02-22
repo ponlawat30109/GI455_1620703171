@@ -23,6 +23,7 @@ Chat Program
 Chat Program
 - v1.4 Add Lobby
 
-## Week 
+## Week 5
 Chat Program
 - v1.5 Add Login-Register, database
+- v1.6 Fixed some bug and change app.js scripts if-else condition to switch case
