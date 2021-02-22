@@ -25,4 +25,4 @@ Chat Program
 
 ## Week 
 Chat Program
-- v1.5 Add Login-Rgister, database
+- v1.5 Add Login-Register, database
