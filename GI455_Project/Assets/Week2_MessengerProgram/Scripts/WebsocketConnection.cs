@@ -92,11 +92,7 @@ namespace MessengerProgram
 
         string textMessage;
         string tempMessageString;
-
-        public static string message;
-
-        
-
+    
         public InputField usernameInputField;
         public InputField passwordInputField;
         public InputField registerUsernameInputField;
@@ -270,7 +266,7 @@ namespace MessengerProgram
             {
                 SocketEvent recieveMsgEvent = JsonUtility.FromJson<SocketEvent>(tempMessageString);
                 MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(recieveMsgEvent.data);
-                message = $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
+
                 OnChatUpdate(recieveMsgEvent);
                 // if (recieveMessageData.userName == username)
                 // {

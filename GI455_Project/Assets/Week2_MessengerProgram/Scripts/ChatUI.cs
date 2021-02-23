@@ -146,10 +146,7 @@ namespace MessengerProgram
         }
 
         void OnChatUpdate(WebsocketConnection.SocketEvent eventCheck)
-        {
-            message = WebsocketConnection.message;
-            username = WebsocketConnection.username;
-            
+        {         
             WebsocketConnection.MessageData recieveMessageData = JsonUtility.FromJson<WebsocketConnection.MessageData>(eventCheck.data);
 
             if (recieveMessageData.userName == displayname)
