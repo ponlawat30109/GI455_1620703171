@@ -27,3 +27,4 @@ Chat Program
 Chat Program
 - v1.5 Add Login-Register, database
 - v1.6 Fixed some bug and change app.js scripts if-else condition to switch case
+- v1.7 Add DelegateHandler
