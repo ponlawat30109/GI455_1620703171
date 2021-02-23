@@ -13,8 +13,8 @@ namespace MessengerProgram
         public InputField registerDisplayNameInputField;
         public InputField registerPasswordInputField;
         public InputField registerRePasswordInputField;
-        public InputField messageInputField;
-        public InputField roomnameInputField;
+        // public InputField messageInputField;
+        // public InputField roomnameInputField;
 
         public Text roomnameHeaderText;
         public Text welcomeChatText;
@@ -22,11 +22,11 @@ namespace MessengerProgram
         public Text errorText;
         public Text UsernameText;
 
-        public Button loginButton;
-        public Button gotoRegisterPanel;
-        public Button registerButton;
-        public Button sendButton;
-        public Button leaveButton;
+        // public Button loginButton;
+        // public Button gotoRegisterPanel;
+        // public Button registerButton;
+        // public Button sendButton;
+        // public Button leaveButton;
 
         public Transform content;
 
@@ -43,10 +43,10 @@ namespace MessengerProgram
         string roomname;
         string username;
         string displayname;
-        string registerUsername;
-        string registerDisplayname;
-        string registerPassword;
-        string registerRePassword;
+        // string registerUsername;
+        // string registerDisplayname;
+        // string registerPassword;
+        // string registerRePassword;
         string message;
 
         void Start()

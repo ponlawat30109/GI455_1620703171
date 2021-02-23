@@ -106,27 +106,27 @@ namespace MessengerProgram
         public InputField messageInputField;
         public InputField roomnameInputField;
 
-        public Text roomnameHeaderText;
-        public Text welcomeChatText;
-        public Text chatText;
-        public Text errorText;
-        public Text UsernameText;
+        // public Text roomnameHeaderText;
+        // public Text welcomeChatText;
+        // public Text chatText;
+        // public Text errorText;
+        // public Text UsernameText;
 
-        public Button loginButton;
-        public Button gotoRegisterPanel;
-        public Button registerButton;
-        public Button sendButton;
-        public Button leaveButton;
+        // public Button loginButton;
+        // public Button gotoRegisterPanel;
+        // public Button registerButton;
+        // public Button sendButton;
+        // public Button leaveButton;
 
-        public Transform content;
+        // public Transform content;
 
-        public GameObject loginPanel;
+        // public GameObject loginPanel;
         public GameObject loginFailedPanel;
-        public GameObject registerPanel;
+        // public GameObject registerPanel;
         public GameObject registerFailPanel;
-        public GameObject roomlistBoard;
-        public GameObject failedPanel;
-        public GameObject chatBoard;
+        // public GameObject roomlistBoard;
+        // public GameObject failedPanel;
+        // public GameObject chatBoard;
 
         [SerializeField] List<Text> chatCount = new List<Text>();
 
