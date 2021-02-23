@@ -1481,6 +1481,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225509701}
   m_CullTransparentMesh: 0
+--- !u!1 &231303108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231303110}
+  - component: {fileID: 231303109}
+  m_Layer: 0
+  m_Name: ChatUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &231303109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231303108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4e3d1685391664ab346385409153ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usernameInputField: {fileID: 137213122}
+  passwordInputField: {fileID: 1053820698}
+  registerUsernameInputField: {fileID: 2053735826}
+  registerDisplayNameInputField: {fileID: 2115449052}
+  registerPasswordInputField: {fileID: 1057196037}
+  registerRePasswordInputField: {fileID: 2593647}
+  messageInputField: {fileID: 1612679749}
+  roomnameInputField: {fileID: 1784117243}
+  roomnameHeaderText: {fileID: 1816704287}
+  welcomeChatText: {fileID: 1492619589}
+  chatText: {fileID: 7924648947207979041, guid: 377636161e0035f4db4b6d2258f539df,
+    type: 3}
+  errorText: {fileID: 699438786}
+  UsernameText: {fileID: 2145416488}
+  loginButton: {fileID: 187260007}
+  gotoRegisterPanel: {fileID: 976318946}
+  registerButton: {fileID: 188596899}
+  sendButton: {fileID: 1380925338}
+  leaveButton: {fileID: 2071963137}
+  content: {fileID: 2125665211}
+  loginPanel: {fileID: 2035049371}
+  loginFailedPanel: {fileID: 284579019}
+  registerPanel: {fileID: 1006557802}
+  registerFailPanel: {fileID: 264732360}
+  roomlistBoard: {fileID: 618883381}
+  failedPanel: {fileID: 2036281159}
+  chatBoard: {fileID: 1169865766}
+  chatCount: []
+--- !u!4 &231303110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231303108}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &248075415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,7 +2002,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &458552883
 GameObject:
@@ -5223,7 +5294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218471740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.5978694, y: -1.1069962, z: -147.71875}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

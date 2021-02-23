@@ -293,7 +293,7 @@ function Register(ws, eventName, data) {
   var userCheck = JSON.parse(data);
   console.log(userCheck);
   
-  var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
+  var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.displayname}')`;
 
   db.all(sqlInsert, (err, rows) => {
     if (err) {
