@@ -59,11 +59,11 @@ namespace MessengerProgram
             WebsocketConnection.instance.OnChatUpdate += OnChatUpdate;
         }
 
-        void OnCreateRoom(string status)
+        void OnCreateRoom(WebsocketConnection.SocketEvent eventCheck)
         {
             displayname = WebsocketConnection.displayname;
             roomname = WebsocketConnection.roomname;
-            if (status == "success")
+            if (eventCheck.status == "success")
             {
                 roomlistBoard.SetActive(false);
                 chatBoard.SetActive(true);
@@ -79,11 +79,11 @@ namespace MessengerProgram
             }
         }
 
-        void OnJoinRoom(string status)
+        void OnJoinRoom(WebsocketConnection.SocketEvent eventCheck)
         {
             displayname = WebsocketConnection.displayname;
             roomname = WebsocketConnection.roomname;
-            if (status == "success")
+            if (eventCheck.status == "success")
             {
                 roomlistBoard.SetActive(false);
                 chatBoard.SetActive(true);
@@ -99,7 +99,7 @@ namespace MessengerProgram
             }
         }
 
-        void OnLeaveRoom(string status)
+        void OnLeaveRoom(WebsocketConnection.SocketEvent eventCheck)
         {
             foreach (Text count in chatCount)
             {
@@ -110,11 +110,11 @@ namespace MessengerProgram
             chatBoard.SetActive(false);
         }
 
-        void OnLogin(string status)
+        void OnLogin(WebsocketConnection.SocketEvent eventCheck)
         {
             displayname = WebsocketConnection.displayname;
 
-            if (status == "success")
+            if (eventCheck.status == "success")
             {
                 loginPanel.SetActive(false);
                 roomlistBoard.SetActive(true);
@@ -128,9 +128,9 @@ namespace MessengerProgram
             }
         }
 
-        void OnRegister(string status)
+        void OnRegister(WebsocketConnection.SocketEvent eventCheck)
         {
-            if (status == "success")
+            if (eventCheck.status == "success")
             {
                 loginPanel.SetActive(true);
                 registerPanel.SetActive(false);
@@ -145,18 +145,20 @@ namespace MessengerProgram
             }
         }
 
-        void OnChatUpdate(string _username)
+        void OnChatUpdate(WebsocketConnection.SocketEvent eventCheck)
         {
             message = WebsocketConnection.message;
             username = WebsocketConnection.username;
             
-            if (_username == username)
+            WebsocketConnection.MessageData recieveMessageData = JsonUtility.FromJson<WebsocketConnection.MessageData>(eventCheck.data);
+
+            if (recieveMessageData.userName == displayname)
             {
                 Text newTextbox = Instantiate(chatText, content) as Text;
                 newTextbox.transform.SetParent(content.transform);
                 newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperRight;
-                newTextbox.text += $"{message}";
+                newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
             }
             else
@@ -165,7 +167,7 @@ namespace MessengerProgram
                 newTextbox.transform.SetParent(content.transform);
                 newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperLeft;
-                newTextbox.text += $"{message}";
+                newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
             }
         }

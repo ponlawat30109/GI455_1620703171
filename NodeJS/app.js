@@ -279,6 +279,7 @@ function Login(ws, eventName, data) {
           data: rows[0].Name,
           status: "success",
         };
+        console.log(resultData.data);
         var jsonToStr = JSON.stringify(resultData);
         ws.send(jsonToStr);
         // console.log(resultData);

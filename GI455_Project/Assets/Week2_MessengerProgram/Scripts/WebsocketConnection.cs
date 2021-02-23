@@ -52,7 +52,7 @@ namespace MessengerProgram
         }
 
         [System.Serializable]
-        struct MessageData
+        public struct MessageData
         {
             public string userName;
             public string message;
@@ -65,7 +65,7 @@ namespace MessengerProgram
             }
         }
 
-        struct SocketEvent
+        public struct SocketEvent
         {
             public string eventName;
             public string data;
@@ -132,8 +132,8 @@ namespace MessengerProgram
 
         [SerializeField] List<MessageData> messageList = new List<MessageData>();
         // [SerializeField] List<UserData> userList = new List<UserData>();
-
-        public delegate void ChatHandler(string eventCheck);
+        
+        public delegate void ChatHandler(SocketEvent eventCheck);
         public ChatHandler OnCreateRoom;
         public ChatHandler OnJoinRoom;
         public ChatHandler OnLeaveRoom;
@@ -177,7 +177,7 @@ namespace MessengerProgram
                 {
                     case "Login":
                         displayname = eventCheck.data;
-                        OnLogin(eventCheck.status);
+                        OnLogin(eventCheck);
                         // if (eventCheck.status == "success")
                         // {
                         //     loginPanel.SetActive(false);
@@ -193,7 +193,7 @@ namespace MessengerProgram
                         // }
                         break;
                     case "Register":
-                        OnRegister(eventCheck.status);
+                        OnRegister(eventCheck);
                         // if (eventCheck.status == "success")
                         // {
                         //     loginPanel.SetActive(true);
@@ -209,7 +209,7 @@ namespace MessengerProgram
                         // }
                         break;
                     case "CreateRoom":
-                        OnCreateRoom(eventCheck.status);
+                        OnCreateRoom(eventCheck);
                         // if (eventCheck.status == "success")
                         // {
                         //     roomlistBoard.SetActive(false);
@@ -226,7 +226,7 @@ namespace MessengerProgram
                         // }
                         break;
                     case "JoinRoom":
-                        OnJoinRoom(eventCheck.status);
+                        OnJoinRoom(eventCheck);
                         // if (eventCheck.status == "success")
                         // {
                         //     roomlistBoard.SetActive(false);
@@ -243,7 +243,7 @@ namespace MessengerProgram
                         // }
                         break;
                     case "LeaveRoom":
-                        OnLeaveRoom(eventCheck.status);
+                        OnLeaveRoom(eventCheck);
                         //GameObject[] chatCount = GameObject.FindGameObjectsWithTag("ChatBox");
                         //foreach (GameObject count in chatCount)
                         // foreach (Text count in chatCount)
@@ -270,9 +270,8 @@ namespace MessengerProgram
             {
                 SocketEvent recieveMsgEvent = JsonUtility.FromJson<SocketEvent>(tempMessageString);
                 MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(recieveMsgEvent.data);
-
                 message = $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
-                OnChatUpdate(recieveMessageData.userName);
+                OnChatUpdate(recieveMsgEvent);
                 // if (recieveMessageData.userName == username)
                 // {
                 //     Text newTextbox = Instantiate(chatText, content) as Text;
@@ -423,7 +422,7 @@ namespace MessengerProgram
             messageInputField.text = string.Empty;
 
             MessageData newMessageData = new MessageData();
-            newMessageData.userName = username;
+            newMessageData.userName = displayname;
             newMessageData.message = textMessage;
             newMessageData.color = "#FFAC13";
 
