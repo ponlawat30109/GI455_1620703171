@@ -5,29 +5,35 @@ using WebSocketSharp;
 
 public class TestConnect : MonoBehaviour
 {
-    [System.Serializable] struct StudentData
+    [System.Serializable]
+    struct StudentData
     {
         public string eventName;
-        public string data;
+        public string studentID;
 
         public StudentData(string eventName, string data)
         {
             this.eventName = eventName;
-            this.data = data;
+            this.studentID = data;
         }
     }
 
-    [System.Serializable] struct GetStudentData
+    [System.Serializable]
+    struct GetStudentData
     {
         public string eventName;
         public string status;
         public string message;
+        public string studentName;
+        public string studentEmail;
 
-        public GetStudentData(string eventName, string status, string data)
+        public GetStudentData(string eventName, string status, string data, string studentName, string studentEmail)
         {
             this.eventName = eventName;
             this.status = status;
             this.message = data;
+            this.studentName = studentName;
+            this.studentEmail = studentEmail;
         }
     }
 
@@ -62,5 +68,7 @@ public class TestConnect : MonoBehaviour
         Debug.Log(recieveMsgEvent.eventName);
         Debug.Log(recieveMsgEvent.status);
         Debug.Log(recieveMsgEvent.message);
+        Debug.Log(recieveMsgEvent.studentName);
+        Debug.Log(recieveMsgEvent.studentEmail);
     }
 }

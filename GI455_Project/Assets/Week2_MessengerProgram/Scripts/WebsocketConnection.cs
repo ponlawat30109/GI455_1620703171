@@ -251,7 +251,7 @@ namespace MessengerProgram
                         // chatBoard.SetActive(false);
                         break;
                     case "SendMessage":
-                        ChatUpdate();
+                        ChatUpdate(eventCheck);
                         break;
                 }
 
@@ -259,7 +259,7 @@ namespace MessengerProgram
             }
         }
 
-        public void ChatUpdate()
+        public void ChatUpdate(SocketEvent eventCheck)
         {
 
             if (string.IsNullOrEmpty(tempMessageString) == false)

@@ -120,7 +120,7 @@ namespace MessengerProgram
                 roomlistBoard.SetActive(true);
                 usernameInputField.text = string.Empty;
                 passwordInputField.text = string.Empty;
-                UsernameText.text = $"Connect as : [{displayname}]";
+                UsernameText.text = $"Connect as : [{eventCheck.data}]";
             }
             else
             {
@@ -146,23 +146,25 @@ namespace MessengerProgram
         }
 
         void OnChatUpdate(WebsocketConnection.SocketEvent eventCheck)
-        {         
+        {
             WebsocketConnection.MessageData recieveMessageData = JsonUtility.FromJson<WebsocketConnection.MessageData>(eventCheck.data);
-
+            Text newTextbox = Instantiate(chatText, content) as Text;
+            newTextbox.transform.SetParent(content.transform);
+            newTextbox.text = string.Empty;
             if (recieveMessageData.userName == displayname)
             {
-                Text newTextbox = Instantiate(chatText, content) as Text;
-                newTextbox.transform.SetParent(content.transform);
-                newTextbox.text = string.Empty;
+                // Text newTextbox = Instantiate(chatText, content) as Text;
+                // newTextbox.transform.SetParent(content.transform);
+                // newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperRight;
                 newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
             }
             else
             {
-                Text newTextbox = Instantiate(chatText, content) as Text;
-                newTextbox.transform.SetParent(content.transform);
-                newTextbox.text = string.Empty;
+                // Text newTextbox = Instantiate(chatText, content) as Text;
+                // newTextbox.transform.SetParent(content.transform);
+                // newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperLeft;
                 newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
