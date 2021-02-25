@@ -7,7 +7,7 @@ namespace MessengerProgram
 {
     public class ChatUI : MonoBehaviour
     {
-        #region UI declareations
+        #region UI declarations
         
         public InputField usernameInputField;
         public InputField passwordInputField;
