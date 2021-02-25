@@ -7,6 +7,8 @@ namespace MessengerProgram
 {
     public class ChatUI : MonoBehaviour
     {
+        #region variables declareations
+        
         public InputField usernameInputField;
         public InputField passwordInputField;
         public InputField registerUsernameInputField;
@@ -37,6 +39,8 @@ namespace MessengerProgram
         public GameObject roomlistBoard;
         public GameObject failedPanel;
         public GameObject chatBoard;
+
+        #endregion
 
         [SerializeField] List<Text> chatCount = new List<Text>();
 
