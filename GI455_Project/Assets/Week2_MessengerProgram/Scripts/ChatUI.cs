@@ -8,7 +8,7 @@ namespace MessengerProgram
     public class ChatUI : MonoBehaviour
     {
         #region UI declarations
-        
+
         public InputField usernameInputField;
         public InputField passwordInputField;
         public InputField registerUsernameInputField;
@@ -65,7 +65,7 @@ namespace MessengerProgram
 
         void OnCreateRoom(WebsocketConnection.SocketEvent eventCheck)
         {
-            displayname = WebsocketConnection.displayname;
+            // displayname = WebsocketConnection.displayname;
             roomname = WebsocketConnection.roomname;
             if (eventCheck.status == "success")
             {
@@ -85,7 +85,7 @@ namespace MessengerProgram
 
         void OnJoinRoom(WebsocketConnection.SocketEvent eventCheck)
         {
-            displayname = WebsocketConnection.displayname;
+            // displayname = WebsocketConnection.displayname;
             roomname = WebsocketConnection.roomname;
             if (eventCheck.status == "success")
             {
@@ -116,7 +116,10 @@ namespace MessengerProgram
 
         void OnLogin(WebsocketConnection.SocketEvent eventCheck)
         {
-            displayname = WebsocketConnection.displayname;
+            // displayname = WebsocketConnection.displayname;
+            WebsocketConnection.UserData newUserInfo = JsonUtility.FromJson<WebsocketConnection.UserData>(eventCheck.data);
+            displayname = newUserInfo.Name;
+            username = newUserInfo.Name;
 
             if (eventCheck.status == "success")
             {
@@ -124,7 +127,7 @@ namespace MessengerProgram
                 roomlistBoard.SetActive(true);
                 usernameInputField.text = string.Empty;
                 passwordInputField.text = string.Empty;
-                UsernameText.text = $"Connect as : [{eventCheck.data}]";
+                UsernameText.text = $"Connect as : [{displayname}]";
             }
             else
             {

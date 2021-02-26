@@ -274,9 +274,10 @@ function Login(ws, eventName, data) {
       } else {
         // var displayName = rows[0].Name;
         // console.log(displayName);
+        var userdata = JSON.stringify(rows[0])
         var resultData = {
           eventName: eventName,
-          data: rows[0].Name,
+          data: userdata,
           status: "success",
         };
         console.log(resultData.data);

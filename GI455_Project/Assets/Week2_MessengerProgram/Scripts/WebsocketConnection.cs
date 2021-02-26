@@ -37,17 +37,17 @@ namespace MessengerProgram
                 repassword = _repassword;
             }
         }
-
-        struct UserData
+        [System.Serializable]
+        public struct UserData
         {
-            public string username;
-            public string password;
-            public string displayname;
+            public string UserID;
+            public string Password;
+            public string Name;
             public UserData(string _username, string _password, string _displayname)
             {
-                username = _username;
-                password = _password;
-                displayname = _displayname;
+                UserID = _username;
+                Password = _password;
+                Name = _displayname;
             }
         }
 
@@ -92,7 +92,7 @@ namespace MessengerProgram
 
         string textMessage;
         string tempMessageString;
-    
+
         public InputField usernameInputField;
         public InputField passwordInputField;
         public InputField registerUsernameInputField;
@@ -127,8 +127,8 @@ namespace MessengerProgram
         [SerializeField] List<Text> chatCount = new List<Text>();
 
         [SerializeField] List<MessageData> messageList = new List<MessageData>();
-        // [SerializeField] List<UserData> userList = new List<UserData>();
-        
+        [SerializeField] List<UserData> userInfo = new List<UserData>();
+
         public delegate void ChatHandler(SocketEvent eventCheck);
         public ChatHandler OnCreateRoom;
         public ChatHandler OnJoinRoom;
@@ -168,11 +168,16 @@ namespace MessengerProgram
             if (string.IsNullOrEmpty(tempMessageString) == false)
             {
                 SocketEvent eventCheck = JsonUtility.FromJson<SocketEvent>(tempMessageString);
-
+                
                 switch (eventCheck.eventName)
                 {
                     case "Login":
-                        displayname = eventCheck.data;
+                        // displayname = eventCheck.data;
+
+                        UserData newUserInfo = JsonUtility.FromJson<UserData>(eventCheck.data);
+                        userInfo.Add(newUserInfo);
+                        displayname = newUserInfo.Name;
+
                         OnLogin(eventCheck);
                         // if (eventCheck.status == "success")
                         // {

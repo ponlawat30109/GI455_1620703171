@@ -20,9 +20,6 @@ let db = new sqlite.Database(
   }
 );
 
-// var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
-// var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
-
 wss.on("connection", (ws) => {
   {
     ws.on("message", (data) => {
@@ -32,256 +29,6 @@ wss.on("connection", (ws) => {
 
       // console.log(toJSON["eventName"]);
       // console.log(toJSON.eventName);
-
-      // if (toJSON.eventName == "CreateRoom") {
-      //   CreateRoom();
-      // } else if (toJSON.eventName == "JoinRoom") {
-      //   JoinRoom();
-      // } else if (toJSON.eventName == "LeaveRoom") {
-      //   LeaveRoom();
-      // } else if (toJSON.eventName == "SendMessage") {
-      //   SendMessage();
-      // } else if (toJSON.eventName == "Login") {
-      //   Login();
-      // } else if (toJSON.eventName == "Register") {
-      //   Register();
-      // }
-
-      // switch (toJSON.eventName) {
-      //   case "CreateRoom":
-      //     console.log("Client request CreateRoom [" + toJSON.data + "]");
-      //     var isFoundRoom = false;
-      //     for (var i = 0; i < roomList.length; i++) {
-      //       if (roomList[i].roomName == toJSON.data) {
-      //         isFoundRoom = true;
-      //         break;
-      //       }
-      //     }
-
-      //     if (isFoundRoom) {
-      //       //callback to client roomname is exist
-      //       console.log("Room is exist");
-      //       console.log("Create Room failed");
-      //       var resultData = {
-      //         eventName: toJSON.eventName,
-      //         data: toJSON.data,
-      //         status: "fail",
-      //       };
-
-      //       var jsonToStr = JSON.stringify(resultData);
-      //       ws.send(jsonToStr);
-      //     } else {
-      //       //create room
-      //       var newRoom = {
-      //         roomName: toJSON.data,
-      //         wsList: [],
-      //       };
-
-      //       newRoom.wsList.push(ws);
-
-      //       roomList.push(newRoom);
-
-      //       var resultData = {
-      //         eventName: toJSON.eventName,
-      //         data: toJSON.data,
-      //         status: "success",
-      //       };
-
-      //       var jsonToStr = JSON.stringify(resultData);
-
-      //       console.log("Room is not exist");
-      //       console.log("Create Room : " + newRoom.roomName);
-
-      //       ws.send(jsonToStr);
-
-      //       for (var i = 0; i < roomList.length; i++) {
-      //         console.log(
-      //           `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
-      //         );
-      //       }
-      //     }
-      //     break;
-      //   case "JoinRoom":
-      //     console.log("Client request to Join Room [" + toJSON.data + "]");
-      //     var isRoomExist = false;
-      //     var roomindex;
-      //     for (var i = 0; i < roomList.length; i++) {
-      //       if (roomList[i].roomName == toJSON.data) {
-      //         isRoomExist = true;
-      //         roomindex = i;
-      //         break;
-      //       }
-      //     }
-
-      //     if (isRoomExist) {
-      //       console.log("Join Room [" + toJSON.data + "] success");
-      //       roomList[roomindex].wsList.push(ws);
-
-      //       var resultData = {
-      //         eventName: toJSON.eventName,
-      //         data: toJSON.data,
-      //         status: "success",
-      //       };
-
-      //       var jsonToStr = JSON.stringify(resultData);
-      //       ws.send(jsonToStr);
-      //     } else {
-      //       console.log("Join Room [" + toJSON.roomName + "] failed");
-      //       var resultData = {
-      //         eventName: toJSON.eventName,
-      //         data: toJSON.data,
-      //         status: "fail",
-      //       };
-
-      //       var jsonToStr = JSON.stringify(resultData);
-      //       ws.send(jsonToStr);
-      //     }
-      //     for (var i = 0; i < roomList.length; i++) {
-      //       console.log(
-      //         `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
-      //       );
-      //     }
-      //     break;
-      //   case "LeaveRoom":
-      //     console.log("Client request to Leave Room [" + toJSON.data + "]");
-      //     var isLeave = false;
-      //     for (var i = 0; i < roomList.length; i++) {
-      //       for (var j = 0; j < roomList[i].wsList.length; j++) {
-      //         if (ws == roomList[i].wsList[j]) {
-      //           roomList[i].wsList.splice(j, 1);
-      //           if (roomList[i].wsList.length <= 0) {
-      //             roomList.splice(i, 1);
-      //           }
-      //           isLeave = true;
-      //           break;
-      //         }
-      //       }
-      //     }
-      //     var resultData = {
-      //       eventName: toJSON.eventName,
-      //       data: toJSON.data,
-      //       status: "success",
-      //     };
-      //     var jsonToStr = JSON.stringify(resultData);
-      //     ws.send(jsonToStr);
-      //     if (isLeave) {
-      //       console.log("Leave room [ success ]");
-      //     } else {
-      //       console.log("Leave room [ failed ]");
-      //     }
-      //     for (var i = 0; i < roomList.length; i++) {
-      //       console.log(
-      //         `ws in [${roomList[i].roomName}] is ${roomList[i].wsList.length}`
-      //       );
-      //     }
-      //     break;
-      //   case "SendMessage":
-      //     console.log(toJSON.data);
-      //     var resultData = {
-      //       eventName: toJSON.eventName,
-      //       data: toJSON.data,
-      //       status: "success",
-      //     };
-      //     var jsonToStr = JSON.stringify(resultData);
-      //     Broadcast(ws, jsonToStr);
-      //     break;
-      //   case "Login":
-      //     var userCheck = JSON.parse(toJSON.data);
-      //     console.log(userCheck);
-      //     let db = new sqlite.Database(
-      //       "./DB/chatDB.db",
-      //       sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE,
-      //       (err) => {
-      //         if (err) throw err;
-
-      //         console.log("Connected to database");
-
-      //         var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
-      //         var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
-
-      //         db.all(sqlSelect, (err, rows) => {
-      //           if (err) {
-      //             console.log(err);
-      //           } else {
-      //             // console.log(rows);
-      //             if (!rows.length) {
-      //               var resultData = {
-      //                 eventName: toJSON.eventName,
-      //                 data: rows,
-      //                 status: "fail",
-      //               };
-      //               var jsonToStr = JSON.stringify(resultData);
-      //               ws.send(jsonToStr);
-      //               // console.log(resultData);
-      //             } else {
-      //               // var displayName = rows[0].Name;
-      //               // console.log(displayName);
-      //               var resultData = {
-      //                 eventName: toJSON.eventName,
-      //                 data: rows[0].Name,
-      //                 status: "success",
-      //               };
-      //               var jsonToStr = JSON.stringify(resultData);
-      //               ws.send(jsonToStr);
-      //               // console.log(resultData);
-      //             }
-      //             // console.table(rows);
-      //             // console.log(`${id} ${password}`);
-      //           }
-      //         });
-      //       }
-      //     );
-      //     break;
-      //   case "Register":
-      //     var userCheck = JSON.parse(toJSON.data);
-      //     console.log(userCheck);
-      //     let db2 = new sqlite.Database(
-      //       "./DB/chatDB.db",
-      //       sqlite.OPEN_CREATE | sqlite.OPEN_READWRITE,
-      //       (err) => {
-      //         if (err) throw err;
-
-      //         console.log("Connected to database");
-
-      //         // var sqlSelect = `SELECT * FROM UserData WHERE UserID = '${userCheck.username}' AND Password = '${userCheck.password}' `;
-      //         var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.displayname}')`;
-
-      //         db2.all(sqlInsert, (err, rows) => {
-      //           if (err) {
-      //             console.log(err);
-      //           } else {
-      //             // console.log(rows);
-      //             if (!rows.length) {
-      //               var resultData = {
-      //                 eventName: toJSON.eventName,
-      //                 data: rows,
-      //                 status: "success",
-      //               };
-      //               var jsonToStr = JSON.stringify(resultData);
-      //               ws.send(jsonToStr);
-      //               // console.log(resultData);
-      //             } else {
-      //               // var displayName = rows[0].Name;
-      //               // console.log(displayName);
-      //               var resultData = {
-      //                 eventName: toJSON.eventName,
-      //                 data: rows,
-      //                 status: "fail",
-      //               };
-      //               var jsonToStr = JSON.stringify(resultData);
-      //               ws.send(jsonToStr);
-      //               // console.log(resultData);
-      //             }
-      //             // console.table(rows);
-      //             // console.log(`${id} ${password}`);
-      //           }
-      //         });
-      //       }
-      //     );
-      //     break;
-      //   default:
-      //     console.log("Error case");
-      // }
 
       switch (toJSON.eventName) {
         case "CreateRoom":
@@ -527,13 +274,23 @@ function Login(ws, eventName, data) {
       } else {
         // var displayName = rows[0].Name;
         // console.log(displayName);
+        var userdata = JSON.stringify(rows[0])
         var resultData = {
           eventName: eventName,
-          data: rows[0].Name,
+          data: userdata,
           status: "success",
         };
+        console.log(resultData.data);
         var jsonToStr = JSON.stringify(resultData);
         ws.send(jsonToStr);
+        // var resultData = {
+        //   eventName: eventName,
+        //   data: rows[0].Name,
+        //   status: "success",
+        // };
+        // console.log(resultData.data);
+        // var jsonToStr = JSON.stringify(resultData);
+        // ws.send(jsonToStr);
         // console.log(resultData);
       }
       // console.table(rows);
@@ -546,7 +303,7 @@ function Register(ws, eventName, data) {
   var userCheck = JSON.parse(data);
   console.log(userCheck);
   
-  var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.name}')`;
+  var sqlInsert = `INSERT INTO UserData (UserID, Password, Name) VALUES ('${userCheck.username}', '${userCheck.password}', '${userCheck.displayname}')`;
 
   db.all(sqlInsert, (err, rows) => {
     if (err) {
@@ -579,3 +336,4 @@ function Register(ws, eventName, data) {
     }
   });
 }
+
