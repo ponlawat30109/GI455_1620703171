@@ -65,8 +65,8 @@ namespace MessengerProgram
 
         void OnCreateRoom(WebsocketConnection.SocketEvent eventCheck)
         {
-            // displayname = WebsocketConnection.displayname;
-            roomname = WebsocketConnection.roomname;
+            roomname = eventCheck.data;
+
             if (eventCheck.status == "success")
             {
                 roomlistBoard.SetActive(false);
@@ -85,8 +85,8 @@ namespace MessengerProgram
 
         void OnJoinRoom(WebsocketConnection.SocketEvent eventCheck)
         {
-            // displayname = WebsocketConnection.displayname;
-            roomname = WebsocketConnection.roomname;
+            roomname = eventCheck.data;
+
             if (eventCheck.status == "success")
             {
                 roomlistBoard.SetActive(false);
@@ -116,7 +116,6 @@ namespace MessengerProgram
 
         void OnLogin(WebsocketConnection.SocketEvent eventCheck)
         {
-            // displayname = WebsocketConnection.displayname;
             WebsocketConnection.UserData newUserInfo = JsonUtility.FromJson<WebsocketConnection.UserData>(eventCheck.data);
             displayname = newUserInfo.Name;
             username = newUserInfo.Name;
