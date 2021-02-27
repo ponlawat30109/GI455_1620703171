@@ -130,13 +130,13 @@ namespace MessengerProgram
         [SerializeField] List<UserData> userInfo = new List<UserData>();
 
         public delegate void ChatHandler(SocketEvent eventCheck);
-        public ChatHandler OnCreateRoom;
-        public ChatHandler OnJoinRoom;
-        public ChatHandler OnLeaveRoom;
-        public ChatHandler OnSendmessage;
-        public ChatHandler OnLogin;
-        public ChatHandler OnRegister;
-        public ChatHandler OnChatUpdate;
+        public event ChatHandler OnCreateRoom;
+        public event ChatHandler OnJoinRoom;
+        public event ChatHandler OnLeaveRoom;
+        public event ChatHandler OnSendmessage;
+        public event ChatHandler OnLogin;
+        public event ChatHandler OnRegister;
+        public event ChatHandler OnChatUpdate;
 
         void Awake()
         {
@@ -168,7 +168,7 @@ namespace MessengerProgram
             if (string.IsNullOrEmpty(tempMessageString) == false)
             {
                 SocketEvent eventCheck = JsonUtility.FromJson<SocketEvent>(tempMessageString);
-                
+
                 switch (eventCheck.eventName)
                 {
                     case "Login":
@@ -177,83 +177,24 @@ namespace MessengerProgram
                         UserData newUserInfo = JsonUtility.FromJson<UserData>(eventCheck.data);
                         userInfo.Add(newUserInfo);
                         displayname = newUserInfo.Name;
-
-                        OnLogin(eventCheck);
-                        // if (eventCheck.status == "success")
-                        // {
-                        //     loginPanel.SetActive(false);
-                        //     roomlistBoard.SetActive(true);
-                        //     usernameInputField.text = string.Empty;
-                        //     passwordInputField.text = string.Empty;
-                        //     username = eventCheck.data;    
-                        //     UsernameText.text = $"Connect as : [{username}]";
-                        // }
-                        // else
-                        // {
-                        //     loginFailedPanel.SetActive(true);
-                        // }
+                        if (OnLogin != null)
+                            OnLogin(eventCheck);
                         break;
                     case "Register":
-                        OnRegister(eventCheck);
-                        // if (eventCheck.status == "success")
-                        // {
-                        //     loginPanel.SetActive(true);
-                        //     registerPanel.SetActive(false);
-                        //     registerUsernameInputField.text = string.Empty;
-                        //     registerDisplayNameInputField.text = string.Empty;
-                        //     registerPasswordInputField.text = string.Empty;
-                        //     registerRePasswordInputField.text = string.Empty;
-                        // }
-                        // else
-                        // {
-                        //     registerFailPanel.SetActive(true);
-                        // }
+                        if (OnRegister != null)
+                            OnRegister(eventCheck);
                         break;
                     case "CreateRoom":
-                        OnCreateRoom(eventCheck);
-                        // if (eventCheck.status == "success")
-                        // {
-                        //     roomlistBoard.SetActive(false);
-                        //     chatBoard.SetActive(true);
-
-                        //     roomnameHeaderText.text = $"Room : [{roomname}]";
-                        //     welcomeChatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
-                        //     welcomeChatText.alignment = TextAnchor.UpperCenter;
-                        // }
-                        // else
-                        // {
-                        //     failedPanel.SetActive(true);
-                        //     errorText.text = "Failed to create room.\nRoom already exist";
-                        // }
+                        if (OnCreateRoom != null)
+                            OnCreateRoom(eventCheck);
                         break;
                     case "JoinRoom":
-                        OnJoinRoom(eventCheck);
-                        // if (eventCheck.status == "success")
-                        // {
-                        //     roomlistBoard.SetActive(false);
-                        //     chatBoard.SetActive(true);
-
-                        //     roomnameHeaderText.text = $"Room : [{roomname}]";
-                        //     welcomeChatText.text = $"\n<b>Welcome {username} to {roomname} Chatroom</b>\n";
-                        //     welcomeChatText.alignment = TextAnchor.UpperCenter;
-                        // }
-                        // else
-                        // {
-                        //     failedPanel.SetActive(true);
-                        //     errorText.text = "Failed to join room.\nRoom is not exist";
-                        // }
+                        if (OnJoinRoom != null)
+                            OnJoinRoom(eventCheck);
                         break;
                     case "LeaveRoom":
-                        OnLeaveRoom(eventCheck);
-                        //GameObject[] chatCount = GameObject.FindGameObjectsWithTag("ChatBox");
-                        //foreach (GameObject count in chatCount)
-                        // foreach (Text count in chatCount)
-                        // {
-                        //     Destroy(count);
-                        // }
-                        // chatCount.Clear();
-                        // roomlistBoard.SetActive(true);
-                        // chatBoard.SetActive(false);
+                        if (OnLeaveRoom != null)
+                            OnLeaveRoom(eventCheck);
                         break;
                     case "SendMessage":
                         ChatUpdate(eventCheck);
@@ -273,24 +214,6 @@ namespace MessengerProgram
                 MessageData recieveMessageData = JsonUtility.FromJson<MessageData>(recieveMsgEvent.data);
 
                 OnChatUpdate(recieveMsgEvent);
-                // if (recieveMessageData.userName == username)
-                // {
-                //     Text newTextbox = Instantiate(chatText, content) as Text;
-                //     newTextbox.transform.SetParent(content.transform);
-                //     newTextbox.text = string.Empty;
-                //     newTextbox.alignment = TextAnchor.UpperRight;
-                //     newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
-                //     chatCount.Add(newTextbox);
-                // }
-                // else
-                // {
-                //     Text newTextbox = Instantiate(chatText, content) as Text;
-                //     newTextbox.transform.SetParent(content.transform);
-                //     newTextbox.text = string.Empty;
-                //     newTextbox.alignment = TextAnchor.UpperLeft;
-                //     newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
-                //     chatCount.Add(newTextbox);
-                // }
 
                 messageList.Add(recieveMessageData);
                 tempMessageString = string.Empty;

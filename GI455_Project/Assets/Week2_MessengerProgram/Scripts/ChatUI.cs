@@ -159,18 +159,12 @@ namespace MessengerProgram
             newTextbox.text = string.Empty;
             if (recieveMessageData.userName == displayname)
             {
-                // Text newTextbox = Instantiate(chatText, content) as Text;
-                // newTextbox.transform.SetParent(content.transform);
-                // newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperRight;
                 newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
             }
             else
             {
-                // Text newTextbox = Instantiate(chatText, content) as Text;
-                // newTextbox.transform.SetParent(content.transform);
-                // newTextbox.text = string.Empty;
                 newTextbox.alignment = TextAnchor.UpperLeft;
                 newTextbox.text += $"<color={recieveMessageData.color}>{recieveMessageData.userName}</color> : {recieveMessageData.message}";
                 chatCount.Add(newTextbox);
