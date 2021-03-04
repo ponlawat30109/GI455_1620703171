@@ -133,7 +133,6 @@ namespace MessengerProgram
         public event ChatHandler OnCreateRoom;
         public event ChatHandler OnJoinRoom;
         public event ChatHandler OnLeaveRoom;
-        public event ChatHandler OnSendmessage;
         public event ChatHandler OnLogin;
         public event ChatHandler OnRegister;
         public event ChatHandler OnChatUpdate;
